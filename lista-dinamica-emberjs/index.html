@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Ember Primeros pasos</title>
+	<!-- Se esta usando Bootstrap Lumen -->
+	<link rel="stylesheet" href="css/metro-bootstrap.css">
+	<link rel="stylesheet" href="css/font-awesome.css">
+</head>
+<body>
+
+<!-- Plantilla Handlebars -->
+<script  type="text/x-handlebars" data-template-name="todos">
+
+
+<div class="container">
+
+<h1>Agregar lista dinamica en Emberjs</h1>
+
+
+{{input type="text" 
+	id="new-todo" 
+	placeholder="Agrega una pelicxula" 
+    value=newTitle action="createTodo"}}
+
+	{{#each itemController="todo" }}
+	<div class="row">
+
+        <div class="col-lg-3">
+          <div class="input-group" {{bind-attr class="isCompleted:completed"}}> 
+			  <label class="checkbox">
+			  <input type="checkbox" checked=isCompleted  class="toggle">
+				<span class="checkbox-label">{{title}}</span>
+			</label>
+			<button class="btn destroy">
+          </div>
+        </div>
+
+    </div>
+	{{/each}}
+
+
+</div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="say-hello">
+      Hello, <b>{{view.name}}</b>
+</script>
+
+
+	<!-- Librerias -->
+	<script src="js/libs/jquery-1.10.2.min.js"></script>
+	<script src="js/libs/handlebars-1.0.0.js"></script>
+	<script src="js/libs/ember.js"></script>
+	<script src="js/libs/ember-data.js"></script>
+	<!-- Aplicacion  -->
+	<script src="js/application.js"></script>
+	<script src="js/router.js"></script>
+	<!-- Se incluye el modelo -->
+	<script src="js/models/todos_models.js"></script>
+	<!-- Se incluye el controlador -->
+	<script src="js/controllers/todos_controllers.js"></script>
+	<!-- Se incluye la vista -->
+	<script src="js/views/todos_views.js"></script>
+</body>
+</html>
