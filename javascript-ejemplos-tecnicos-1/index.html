@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Sobrecarga de funciones</title>
+	<link rel="stylesheet" href="css/font-awesome.css">
+	<link rel="stylesheet" href="css/metro-bootstrap.css">
+</head>
+<body>
+
+<div class="container">
+	
+	<h1>Puedes ver el codigo tambien en la consola, presionando 
+		<strong>F12</strong>
+	</h1>
+	<h2><strong>SOBRECARGA DE FUNCIONES</strong></h2>
+	<!-- PRIMER EJEMPLO -->
+	<div class="row">		
+		<div class="col-sm-6 col-md-6">
+			<div class="thumbnail tile tile-double tile-orange">
+			  <a href="#">
+				<h1 class="tile-text">
+                        Ejemplo 01</h1>
+				</a>
+			  </div>
+		</div>
+		<pre>
+	function enviarMensaje(msj, obj){
+	//si estan presentes los dos
+	if (arguments.length == 2)
+		//envia el parametro {msj} al objeto
+		obj.manejarMensaje(msj)
+	else
+		//sino se asume que solo hay mensaje
+		alert(msj)
+	}
+		</pre>
+	</div>
+	<!-- SEGUNDO EJEMPLO -->
+	<h2><strong>DETECCION DE ARGUMENTOS</strong></h2>
+	<div class="row">		
+		<div class="col-sm-6 col-md-6">
+			<div class="thumbnail tile tile-double tile-orange">
+			  <a href="#">
+				<h1 class="tile-text">
+                        Ejemplo 02 </h1>
+				</a>
+			  </div>
+		</div>
+		<pre>
+	function mostrarError( msg ){
+		//se asegura que el parametro no sea undefined
+		if (typeof msg == 'undefined') {
+			//si es asi muestra ese error
+			msg = 'Un error ha ocurrido'
+		};
+		//muestra el parametro
+		alert(msg);
+	}
+
+	//ejecutamos el mensaje, intercambia para ver resultados
+	// mostrarError('Hola funcion mostrarError, no estas definido');
+	mostrarError();
+		</pre>
+	</div>
+</div>
+
+
+
+	<script src="js/main.js"></script>	
+</body>
+</html>
