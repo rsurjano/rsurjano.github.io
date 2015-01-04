@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ikaru.js - Ikaru.js API</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="Ikaru.js API"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.4</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/COORDINATES.html">COORDINATES</a></li>
+                                <li><a href="../classes/CSS.html">CSS</a></li>
+                                <li><a href="../classes/DOM.html">DOM</a></li>
+                                <li><a href="../classes/EVENTS.html">EVENTS</a></li>
+                                <li><a href="../classes/HTML.html">HTML</a></li>
+                                <li><a href="../classes/LIST.html">LIST</a></li>
+                                <li><a href="../classes/TRANSVERSAL.html">TRANSVERSAL</a></li>
+                            </ul>
+                
+                            <ul id="api-modules" class="apis modules">
+                                <li><a href="../modules/ikaru.js.html">ikaru.js</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: ikaru.js</h1>
+                        
+                        <div class="file">
+                            <pre class="code prettyprint linenums">
+                        /**
+                         * ikaru.js is a lightweiht &amp; Faster DOM manipulation cross Browser
+                         *
+                         * @module ikaru.js
+                         */
+                        
+                        (function(window, document, undefined) {
+                        
+                          var Dom = {};
+                        
+                          var _domReadyHandlers = [],
+                            _domLoadedHandlers = [],
+                            _isDomReady = false,
+                            _isDomLoaded = false,
+                            _animationLastTime;
+                        
+                          // EVENTS
+                          var addListener = document.addEventListener ? &#x27;addEventListener&#x27; : &#x27;attachEvent&#x27;;
+                          var removeListener = document.removeEventListener ? &#x27;removeEventListener&#x27; : &#x27;detachEvent&#x27;;
+                          var eventPrefix = document.addEventListener ? &#x27;&#x27; : &#x27;on&#x27;;
+                          var createEvent = document.createEvent ? &#x27;createEvent&#x27; : &#x27;createEventObject&#x27;;
+                          var dispatchEvent = document.dispatchEvent ? &#x27;dispatchEvent&#x27; : &#x27;fireEvent&#x27;;
+                        
+                        
+                          // MANIPULATION / AANIMATIONS
+                          var cssNameProperty = function(prop) {
+                            return prop;
+                          };
+                          var requestAnimationFrame = window.requestAnimationFrame;
+                          var cancelAnimationFrame = window.cancelAnimationFrame || window.cancelRequestAnimationFrame;
+                          var style = _getComputedStyle(div);
+                        
+                          // CROSSBROWSER
+                          var vendors = [&#x27;-moz-&#x27;, &#x27;-ms-&#x27;, &#x27;-webkit-&#x27;, &#x27;-o-&#x27;, &#x27;&#x27;];
+                        
+                          //DOM
+                          var doc = window.document;
+                          var _createElem = doc.createElement;
+                          var div = _createElem(&#x27;div&#x27;);
+                        
+                        
+                        
+                          // Save bytes in the minified (but not gzipped) version:
+                          var ArrayProto = Array.prototype,
+                            ObjProto = Object.prototype,
+                            FuncProto = Function.prototype;
+                        
+                          // Create quick reference variables for speed access to core prototypes.
+                          var
+                            push = ArrayProto.push,
+                            slice = ArrayProto.slice,
+                            concat = ArrayProto.concat,
+                            toString = ObjProto.toString,
+                            hasOwnProperty = ObjProto.hasOwnProperty;
+                        
+                          // All **ECMAScript 5** native function implementations to shortcut use
+                          var
+                            nativeForEach = ArrayProto.forEach,
+                            nativeMap = ArrayProto.map,
+                            nativeReduce = ArrayProto.reduce,
+                            nativeReduceRight = ArrayProto.reduceRight,
+                            nativeFilter = ArrayProto.filter,
+                            nativeEvery = ArrayProto.every,
+                            nativeSome = ArrayProto.some,
+                            nativeIndexOf = ArrayProto.indexOf,
+                            nativeLastIndexOf = ArrayProto.lastIndexOf,
+                            nativeIsArray = Array.isArray,
+                            nativeKeys = Object.keys,
+                            nativeBind = FuncProto.bind;
+                        
+                          // MATH FUNCTIONS
+                          var math = Math,
+                            round = math.round;
+                        
+                          //ie?
+                          var ie = (function() {
+                            var undef, v = 3,
+                              div = document.createElement(&#x27;div&#x27;),
+                              all = div.getElementsByTagName(&#x27;i&#x27;);
+                            while (div.innerHTML = &#x27;&lt;!--[if gt IE &#x27; + (++v) + &#x27;]&gt;&lt;i&gt;&lt;/i&gt;&lt;![endif]--&gt;&#x27;, all[0]);
+                            return v &gt; 4 ? v : undef;
+                          }());
+                        
+                          //css name property detection
+                          if (ie &amp;&amp; ie &lt; 9) {
+                            cssNameProperty = function(prop) {
+                              for (var exp = /-([a-z0-9])/; exp.test(prop); prop = prop.replace(exp, RegExp.$1.toUpperCase()));
+                              return prop;
+                            };
+                          }
+                          //transition detection
+                          var transitionSupport = (function() {
+                            for (var i in vendors) {
+                              if (_isString(style[vendors[i] + &#x27;transition&#x27;])) return true;
+                            }
+                            return false;
+                          })();
+                        
+                          //request animation pollyfill
+                          if (!requestAnimationFrame || !cancelAnimationFrame) {
+                            for (var i = 0; i &lt; vendors.length; i++) {
+                              var vendor = vendors[i];
+                              requestAnimationFrame = requestAnimationFrame || window[vendor + &#x27;RequestAnimationFrame&#x27;];
+                              cancelAnimationFrame = cancelAnimationFrame || window[vendor + &#x27;CancelAnimationFrame&#x27;] || window[vendor + &#x27;CancelRequestAnimationFrame&#x27;];
+                            }
+                          }
+                        
+                          if (!requestAnimationFrame || !cancelAnimationFrame) {
+                            requestAnimationFrame = function(callback) {
+                              var currentTime = new Date().getTime();
+                              var timeToCall = Math.max(0, 16 - (currentTime - _animationLastTime));
+                              var id = window.setTimeout(function _requestAnimationFrameTimeout() {
+                                callback(currentTime + timeToCall);
+                              }, timeToCall);
+                        
+                              _animationLastTime = currentTime + timeToCall;
+                              return id;
+                            };
+                        
+                            cancelAnimationFrame = function(id) {
+                              window.clearTimeout(id);
+                            };
+                          }
+                        
+                        
+                        
+                        
+                        
+                          // Util functions
+                          //
+                          var _curry2 = function _curry2(fn) {
+                            return function(a, b) {
+                              switch (arguments.length) {
+                                case 0:
+                                  throw _noArgsException();
+                                case 1:
+                                  return function(b) {
+                                    return fn(a, b);
+                                  };
+                                default:
+                                  return fn(a, b);
+                              }
+                            };
+                          };
+                        
+                          var _indexOf = function _indexOf(array, obj) {
+                            if (Array.prototype.indexOf) return Array.prototype.indexOf.call(array, obj);
+                            for (var i = 0, j = array.length; i &lt; j; i++) {
+                              if (array[i] === obj) return i;
+                            }
+                            return -1;
+                          };
+                          var _isArray = nativeIsArray || function _isArray(val) {
+                            return val != null &amp;&amp; val.length &gt;= 0 &amp;&amp; Object.prototype.toString.call(val) === &#x27;[object Array]&#x27;;
+                          };
+                          var _isString = function _isString(object) {
+                            return typeof object === &#x27;string&#x27;;
+                          };
+                          var _isNumeric = function _isNumeric(object) {
+                            return typeof object === &#x27;number&#x27; &amp;&amp; isFinite(object);
+                          };
+                          var _isObject = function _isObject(object) {
+                            return typeof object === &#x27;object&#x27;;
+                          };
+                          var _isFunction = function _isFunction(object) {
+                            return typeof object === &#x27;function&#x27;;
+                          };
+                          var _isLiteralObject = function _isLiteralObject(object) {
+                            return object &amp;&amp; typeof object === &quot;object&quot; &amp;&amp; Object.getPrototypeOf(object) === Object.getPrototypeOf({});
+                          };
+                          var _isIterable = function _isIterable(object) {
+                            if (I.isNode(object) || I.isElement(object) || object === window) return false;
+                            var r = _isLiteralObject(object) || _isArray(object) || (typeof object === &#x27;object&#x27; &amp;&amp; object !== null &amp;&amp; object[&#x27;length&#x27;] !== undefined);
+                            return r;
+                          };
+                          var _getComputedStyle = function _getComputedStyle(element, prop) {
+                            var computedStyle;
+                            if (typeof window.getComputedStyle === &#x27;function&#x27;) { //normal browsers
+                              computedStyle = window.getComputedStyle(element);
+                            } else if (typeof document.currentStyle !== undefined) { //shitty browsers
+                              computedStyle = element.currentStyle;
+                            } else {
+                              computedStyle = element.style;
+                            }
+                            if (prop) {
+                              return computedStyle[prop];
+                            } else {
+                              return computedStyle;
+                            }
+                          };
+                          var _each = function _each(object, callback) {
+                            if (_isArray(object) || (typeof object === &#x27;object&#x27; &amp;&amp; object.length !== undefined)) {
+                              for (var i = 0, l = object.length; i &lt; l; i++) {
+                                callback.apply(object[i], [object[i], i]);
+                              }
+                              return;
+                            }
+                        
+                            if (_isLiteralObject(object)) {
+                              for (var key in object) {
+                                callback.apply(object[key], [object[key], key]);
+                              }
+                            }
+                          };
+                          var _error = function _error(msg) {
+                            str = msg || &#x27;Error detected&#x27;;
+                            throw new Error(str);
+                          };
+                          var _checkDomRequired = function _checkDomRequired(object) {
+                            if (!!(object &amp;&amp; object.nodeType === 1)) _error(&#x27;HTML Object required&#x27;);
+                            return true;
+                          };
+                          var _noArgsException = function _noArgsException() {
+                            return new TypeError(&#x27;Funtion called with no arguments&#x27;);
+                          };
+                        
+                        
+                          var _forEach = function _forEach(fn, list) {
+                            var idx = -1,
+                              len = list.length;
+                            while (++idx &lt; len) {
+                              fn(list[idx]);
+                            }
+                            // i can&#x27;t bear not to return *something*
+                            return list;
+                          };
+                          var _has = _curry2(function(prop, obj) {
+                            return Object.prototype.hasOwnProperty.call(obj, prop);
+                          });
+                        
+                        
+                          /**
+                           * List Functions
+                           *
+                           * @class LIST
+                           */
+                        
+                          /**
+                           * Implement forEach function
+                           *
+                           * @method forEach
+                           * @return {Boolean} TRUE if succeed | THROW if error
+                           */
+                          I.forEach = _curry2(_forEach);
+                        
+                        
+                          /**
+                           * Check if element has a property
+                           *
+                           * @method has
+                           * @param Void {Mixed} Must be Array or Object
+                           * @param String {String} String to find
+                           * @return {Boolean} True or False
+                           */
+                          I._has = _curry2(__has);
+                        
+                          /**
+                           * See type element
+                           *
+                           * @method is
+                           * @param Ctor {String} Must be: String, Object, Number
+                           * @param val {Void} The Element to compare
+                           * @return {Boolean} True or False
+                           */
+                          I.is = _curry2(function is(Ctor, val) {
+                            return val != null &amp;&amp; val.constructor === Ctor || val instanceof Ctor;
+                          });
+                        
+                          /**
+                           * Verify if Element is empty
+                           *
+                           * @method isEmpty
+                           * @param object {Mixin} Must be: String, Object, Number
+                           * @return {Boolean} True if empty, False if not
+                           */
+                          I.isEmpty = function(object) {
+                            if (object == null) return true;
+                            if (_isArray(object) || I.is(&#x27;string&#x27;, object)) return object.length === 0;
+                            for (var key in object)
+                              if (_has(key, object)) return false;
+                            return true;
+                          };
+                        
+                          /**
+                           * Checks if given parameter is a DOMNode Object
+                           *
+                           * @method isDom
+                           * @param Object {Object} Must be a HTML Element, false if another is provided
+                           * @return {Boolean} True if is DOMNode, False if not
+                           */
+                          I.isDom = function(object) {
+                            return !!(object &amp;&amp; object.nodeType === 1);
+                          };
+                        
+                          // based in part from: http://blog.garstasio.com/you-dont-need-jquery/
+                          /**
+                           * DOM MANIPULATION
+                           *
+                           * @class DOM
+                           */
+                        
+                          /**
+                           * Create new HTML element with specific tag
+                           *
+                           * @method domNode
+                           * @param tag {String} Provide a string to construct a DOM node
+                           * @return {DOM Object} new HTML Element
+                           */
+                          I.domNode = function(tag) {
+                            if (I.isEmpty(tag) || !I.is(&#x27;String&#x27;, tag)) error(&#x27;Need a String tag&#x27;);
+                            return _createElem(tag);
+                          };
+                        
+                        
+                        
+                          /**
+                           * Polyfill window.requestAnimationFrame
+                           *
+                           * @method requestAnimationFrame
+                           * @return {Object} crossbrowser requestAnimationFrame
+                           */
+                          I.requestAnimationFrame = function() {
+                            return requestAnimationFrame;
+                          };
+                        
+                        
+                          /**
+                           * Polyfill window.cancelAnimationFrame
+                           *
+                           * @method cancelAnimationFrame
+                           * @return {Object} crossbrowser cancelAnimationFrame
+                           */
+                          I.cancelAnimationFrame = function() {
+                            return cancelAnimationFrame;
+                          };
+                        
+                        
+                          /**
+                           * Normalized Event object
+                           *
+                           * @method Event
+                           * @param e {Object} Event Oject
+                           * @return {Object} Event binded
+                           */
+                          I.Event = function(e) {
+                            this._e = e;
+                        
+                            //Stops event bubbling
+                            I.Event.prototype.stopPropagation = function() {
+                              if (this._e.stopPropagation) {
+                                this._e.stopPropagation();
+                              } else {
+                                this._e.cancelBubble = true;
+                              }
+                            };
+                        
+                            // Prevents default behaviour
+                            I.Event.prototype.preventDefault = function() {
+                              if (this._e.preventDefault) {
+                                this._e.preventDefault();
+                              } else {
+                                this._e.returnValue = false;
+                              }
+                            };
+                        
+                            this.target = this._e.target || this._e.srcElement;
+                            this.ctrlKey = this._e.ctrlKey;
+                            this.shiftKey = this._e.shiftKey;
+                            this.altKey = this._e.altKey;
+                            this.layerY = this._e.layerY || this._e.offsetY;
+                            this.layerX = this._e.layerX || this._e.offsetX;
+                            this.x = this._e.x || this._e.clientX;
+                            this.y = this._e.y || this._e.clientY;
+                            this.keyCode = this._e.keyCode;
+                            this.name = this.type = this._e.type;
+                            this.path = this._e.path;
+                            this.timeStamp = this._e.timeStamp;
+                            if (ie &amp; ie &lt; 9) {
+                              this.button = this._e.button == 1 ? I.Mouse.BUTTON_LEFT : (this._e.button == 4 ? I.Mouse.BUTTON_MIDDLE : I.Mouse.BUTTON_RIGHT);
+                            } else if (this._e.hasOwnProperty(&#x27;which&#x27;)) {
+                              this.button = this._e.which == 1 ? I.Mouse.BUTTON_LEFT : (this._e.which == 2 ? I.Mouse.BUTTON_MIDDLE : I.Mouse.BUTTON_RIGHT);
+                            } else {
+                              this.button = this._e.button;
+                            }
+                          };
+                        
+                          I.Mouse = {};
+                        
+                          I.Mouse.BUTTON_LEFT = 0;
+                          I.Mouse.BUTTON_MIDDLE = 1;
+                          I.Mouse.BUTTON_RIGHT = 2;
+                        
+                        
+                          /**
+                           * Attaches javascript listener to DOM Object
+                           *
+                           * @method addListener
+                           * @param event {String} Listener name, must be one of them:
+                           * * MOUSE EVENTS
+                           * click
+                           * dblclick
+                           * contextmenu
+                           * mousedown
+                           * mouseenter
+                           * mouseleave
+                           * mousemove
+                           * mouseover
+                           * mouseout
+                           * mouseup
+                           * mousemove
+                           * * TOUCH EVENTS
+                           * touchstart
+                           * touchend
+                           * touchmove
+                           * touchcancel
+                           * * KEYBOARD EVENTS
+                           * keydown
+                           * keyup
+                           * keypress
+                           * * FORM EVENTS
+                           * select
+                           * reset
+                           * focus
+                           * blur
+                           * submit
+                           * change
+                           * * FRAME/WINDOW EVENT
+                           * load
+                           * unload
+                           * resize
+                           * unload
+                           * error
+                           * scroll
+                           * * STANDARD DRAG AND DROP EVENTS
+                           * drag
+                           * dragstart
+                           * dragend
+                           * dragenter
+                           * dragleave
+                           * dragover
+                           * drop
+                           * * DOM DRAG AND DROP EVENTS
+                           * onDomDragStart
+                           * onDomDragEnd
+                           * onDomDragMove
+                           * onDomDrop
+                           * onDomDragEnter
+                           * onDomDragLeave
+                           *
+                           * @param element {Object} HTML Element to attach listener
+                           * @param listener {Function} function to execute
+                           * @return {Boolean} Function callback or false if don&#x27;t attached
+                           */
+                          I.addListener = function(event, element, listener) {
+                            if (element === undefined) _error(&quot;Parameter cannot be undefined&quot;);
+                        
+                            if (_isIterable(element)) {
+                              _each(element, function(e, index) {
+                                I.addListener(e, event, listener);
+                              });
+                              return Dom;
+                            }
+                        
+                            _checkDomRequired(element);
+                        
+                            element._event = element._event || {};
+                            element._event[event] = element._event[event] || {
+                              keys: [],
+                              values: []
+                            };
+                        
+                            //checks if listener already exists
+                            if (_indexOf(element._event[event].keys, listener) != -1) return Dom;
+                        
+                            element._event[event].keys.push(listener);
+                            var _listener = function(e) {
+                              var evt = new I.Event(e);
+                              if (listener.call(element, evt) === false) e.stop();
+                            };
+                        
+                            element._event[event].values.push(_listener);
+                            element[addListener](eventPrefix + event, _listener);
+                        
+                            return Dom;
+                          };
+                        
+                          // remove Listener from element
+                          I.removeListener = function(element, event, listener) {
+                            if (element === undefined) _error(&quot;Parameter cannot be undefined&quot;);
+                        
+                            if (_isIterable(element)) {
+                              _each(element, function(e, index) {
+                                I.removeListener(e, event, listener);
+                              });
+                              return Dom;
+                            }
+                        
+                            if (!I.isDom(element) &amp;&amp; element !== window) _error(element + &quot; is not a DOMNode object&quot;);
+                        
+                            if (!element._event || !element._event[event]) return false;
+                        
+                        
+                            var key = _indexOf(element._event[evenµt].keys, listener);
+                            if (key === -1) return false;
+                            var _listener = element._event[event].values[key];
+                        
+                            element[removeListener](eventPrefix + event, _listener);
+                            delete element._event[event].values[key];
+                            delete element._event[event].keys[key];
+                        
+                            return Dom;
+                          };
+                        
+                          /**
+                           * Determine if element has listener
+                           *
+                           * @method hasListener
+                           * @param element {Object} HTML element
+                           * @param event {String} Event name to find in element
+                           * @param listener {Function} function callback
+                           * @return {Boolean} True or False acording found listener or not
+                           */
+                          I.hasListener = function(element, event, listener) {
+                            if (!I.isDom(element) &amp;&amp; element !== window) _error(element + &quot; is not a DOMNode object&quot;);
+                            if (!element._event || !element._event[event]) return false;
+                            return _indexOf(element._event[event].keys, listener) !== -1;
+                          };
+                        
+                          /**
+                           * Find DOM element by CSS Selector
+                           *
+                           * @method find
+                           * @param selector {String} CSS selector
+                           * @param element {Object} HTML Element}
+                           * @return {Object} HTML element
+                           */
+                          I.find = function(selector, element) {
+                            var result = (I.isDom(element)) ? element.querySelectorAll(selector) : document.querySelectorAll(selector);
+                            return result;
+                          };
+                        
+                          /**
+                           * Return DOM element by ID
+                           *
+                           * @method id
+                           * @param id {String} ID of element
+                           * @return {Object} HTML element
+                           */
+                          I.id = function(id) {
+                            return document.getElementById(id);
+                          };
+                        
+                          /**
+                           * Return DOM element(s) by Tag
+                           *
+                           * @method tag
+                           * @param name {String} Tag of element(s)
+                           * @return {Object} HTML element
+                           */
+                          I.tag = function(name) {
+                            return document.getElementsByTagName(name);
+                          };
+                        
+                          /**
+                           * Find elements by Class Name
+                           *
+                           * @method byClass
+                           * @param name {String} Classname of element(s)
+                           * @return {Object} HTML element
+                           */
+                          I.byClass = function(name) {
+                            if (name.substring(0, 1) == &quot;.&quot;) name = name.substring(1);
+                            if (document.getElementsByClassName) return document.getElementsByClassName(name);
+                            if (document.querySelector &amp;&amp; document.querySelectorAll) return document.querySelectorAll(&quot;.&quot; + name);
+                          };
+                        
+                          /**
+                           * COORDINATES
+                           *
+                           * @class COORDINATES
+                           */
+                        
+                        
+                          /**
+                           * Get Coordinates from element
+                           *
+                           * @method offset
+                           * @param element {Object} HTML Element
+                           * @return {Object} Coordinates of HTML element
+                           */
+                          I.offset = function(element) {
+                            _checkDomRequired(element);
+                        
+                            var rect = element.getBoundingClientRect();
+                        
+                            var offset = {
+                              top: round(rect.top),
+                              right: round(rect.right),
+                              bottom: round(rect.bottom),
+                              left: round(rect.left),
+                              width: rect.width ? round(rect.width) : round(element.offsetWidth),
+                              height: rect.height ? round(rect.height) : round(element.offsetHeight)
+                            };
+                        
+                            //fallback to css width and height
+                            if (offset.width &lt;= 0) offset.width = parseFloat(_getComputedStyle(element, &#x27;width&#x27;));
+                            if (offset.height &lt;= 0) offset.height = parseFloat(_getComputedStyle(element, &#x27;height&#x27;));
+                        
+                            return offset;
+                          };
+                        
+                        
+                          /**
+                           * get Width from element
+                           *
+                           * @method width
+                           * @param element {Object} HTML Element
+                           * @return {Int} Width element
+                           */
+                          I.width = function(element) {
+                            return I.offset(element).width;
+                          };
+                        
+                          /**
+                           * get Height from element
+                           *
+                           * @method Height
+                           * @param element {Object} HTML Element
+                           * @return {Int} height element
+                           */
+                          I.height = function(element) {
+                            return I.offset(element).height;
+                          };
+                        
+                        
+                          /**
+                           * TRANSVERSAL DOM
+                           *
+                           * @class TRANSVERSAL
+                           */
+                        
+                          /**
+                           * Get Parent from HTML Element
+                           *
+                           * @method parent
+                           * @param element {Object} HTML Element
+                           * @return {Object} Parent HTML Element
+                           */
+                          I.parent = function(element) {
+                            if (!I.isDom(element)) _error(element + &quot; is not a DOM element&quot;);
+                            return element.parentNode;
+                          };
+                        
+                          /**
+                           * Get Children elements from HTML Element
+                           *
+                           * @method children
+                           * @param element {Object} HTML Element
+                           * @param tag {String/Boolean} If TRUE, get All Children elements, if String, filter by that string
+                           * @return {Object} Children HTML Element
+                           */
+                          I.children = function(element, tag) {
+                            var i;
+                        
+                            if (typeof tag === &#x27;boolean&#x27; &amp;&amp; tag) return element.childNodes;
+                        
+                            var res = [];
+                        
+                            if (_isString(tag)) {
+                              for (i = 0, j = element.childNodes.length; i &lt; j; i++) {
+                                if (element.childNodes[i].nodeName.toLowerCase() === tag.toLowerCase()) res.push(element.childNodes[i]);
+                              }
+                              return res;
+                            }
+                        
+                            for (i in element.childNodes) {
+                              if (element.childNodes[i].nodeType === 1) res.push(element.childNodes[i]);
+                            }
+                        
+                            return res;
+                          };
+                        
+                          /**
+                           * Get Next sibling from HTML element
+                           *
+                           * @method next
+                           * @param element {Object} HTML Element
+                           * @return {Object} Next HTML Element
+                           */
+                          I.next = function(element) {
+                            _checkDomRequired(element);
+                            var res = element.nextSibling;
+                            if (res.nodeType != 1) return I.next(res);
+                            return res;
+                          };
+                        
+                        
+                          /**
+                           * Get Previous sibling from HTML Element
+                           *
+                           * @method previous
+                           * @param element {Object} HTML Element
+                           * @return {Object} Previous HTML Element
+                           */
+                          I.previous = function(element) {
+                            _checkDomRequired(element);
+                        
+                            var result = element.previousSibling;
+                            if (result.nodeType != 1) return I.previous(result);
+                            return result;
+                          };
+                        
+                          /**
+                           * Get or Set element attributes
+                           * @method attr
+                           *
+                           * @param element {Object} HTML Element
+                           * @param attribute {Mixed} Must be: Array, String, Object
+                           * * I.attr(element, &quot;href&quot;); // returns href attribute&#x27;s value of the element
+                           * * I.attr(element, [&quot;href&quot;, &quot;target&quot;]); //returns object of attributed of the element
+                           * * I.attr(element, {href: &quot;#new&quot;}); //sets href attribute&#x27;s value
+                           */
+                          I.attr = function(element, attribute) {
+                            _checkDomRequired(element);
+                        
+                            var result, i;
+                        
+                            //get one attribute
+                            if (typeof attribute === &quot;string&quot;) {
+                        
+                              if (attribute === &#x27;class&#x27; &amp;&amp; element.className !== undefined) { //class?
+                                result = element.className;
+                              } else if (attribute === &#x27;for&#x27; &amp;&amp; element.htmlFor !== undefined) { //for?
+                                result = element.htmlFor;
+                              } else if (attribute === &#x27;value&#x27; &amp;&amp; element.value !== undefined) { //value?
+                                result = element.value;
+                              } else {
+                                result = element.getAttribute(attribute);
+                              }
+                        
+                              if (result === &#x27;&#x27;) result = null;
+                              return result;
+                            }
+                        
+                            //get many
+                            if (_isArray(attribute)) {
+                              result = {};
+                              for (i in attribute) {
+                                result[attribute[i]] = I.attribute(element, attribute[i]);
+                              }
+                              return result;
+                            }
+                        
+                            //set attribute(s)
+                            if (_isLiteralObject(attribute)) {
+                              for (i in attribute) {
+                                if (attribute[i] === null) {
+                                  element.removeAttribute(i);
+                                } else {
+                                  element.setAttribute(i, attribute[i]);
+                                }
+                              }
+                              return attribute;
+                            }
+                        
+                            return false;
+                          };
+                        
+                        
+                        
+                          /**
+                           * CSS MANIPULATION
+                           *
+                           * @class CSS
+                           */
+                        
+                        
+                          /**
+                           * Set CSS Properties
+                           *
+                           * @method css
+                           * @param element {Object} HTML Element
+                           * @param style {Object} json object with css style
+                           * @return {Object} HTML Element styled
+                           */
+                          I.css = function(element, style) {
+                            var i;
+                        
+                            if (_isIterable(element) &amp;&amp; _isLiteralObject(style)) {
+                              _each(element, function(e) {
+                                I.css(e, style);
+                              });
+                              return Dom;
+                            }
+                            _checkDomRequired(element);
+                        
+                            //get one element
+                            if (typeof style === &quot;string&quot;) return _getComputedStyle(element, cssNameProperty(style));
+                        
+                            //get array of elements
+                            if (_isArray(style)) {
+                              var css = {};
+                              for (i in style) {
+                                css[style[i]] = _getComputedStyle(element, cssNameProperty(style[i]));
+                              }
+                              return css;
+                            }
+                        
+                            if (_isLiteralObject(style)) {
+                              //set csses
+                              for (i in style) {
+                                element.style[cssNameProperty(i)] = style[i];
+                              }
+                              return style;
+                            }
+                            return false;
+                          };
+                        
+                        
+                          /**
+                           * Gets css classes
+                           *
+                           * @method classess
+                           * @param element {Object} HTML Element
+                           * @param style {Object} json object with css style
+                           * @return {Array} Classnames
+                           */
+                          I.classess = function(element) {
+                            _checkDomRequired(element);
+                        
+                            var attribute = I.attribute(element, &#x27;class&#x27;);
+                            if (!attribute) return [];
+                            attribute = attribute.split(&#x27; &#x27;);
+                            var classNames = [];
+                            for (var i in attribute) {
+                              if (attribute[i] === &#x27;&#x27;) continue;
+                              classNames.push(attribute[i]);
+                            }
+                            return classNames;
+                          };
+                        
+                          /**
+                           * Check if HTML Element has a Class
+                           *
+                           * @method hasClass
+                           * @param element {Object} HTML Element
+                           * @param className {String} json object with css style
+                           * @return {Array} Classnames
+                           */
+                          I.hasClass = function(element, className) {
+                            _checkDomRequired(element);
+                        
+                            if (_isString(className)) {
+                              return _indexOf(I.classess(element), className) &gt; -1 ? true : false;
+                            } else if (_isArray(className)) {
+                              var elementClasses = I.classess(element);
+                              for (var i in className) {
+                                if (_indexOf(className[i], elementClasses) === -1) {
+                                  return false;
+                                }
+                              }
+                              return true;
+                            } else {
+                              return false;
+                            }
+                        
+                            return false;
+                          };
+                        
+                        
+                          /**
+                           * Add Class to HTML object
+                           *
+                           * @method addClass
+                           * @param element {Object} HTML Element
+                           * @param className {String} string with className
+                           * @return {Array} Classnames
+                           */
+                          I.addClass = function(element, className) {
+                            if (element === undefined) _error(&quot;first parameter cannot be undefined&quot;);
+                        
+                            if (_isIterable(element)) {
+                              _each(element, function(e) {
+                                I.addClass(e, className);
+                              });
+                              return Dom;
+                            }
+                        
+                            _checkDomRequired(element);
+                        
+                            if (_isArray(className)) {
+                              for (var i in className) {
+                                I.addClass(element, className[i]);
+                              }
+                              return Dom;
+                            }
+                        
+                            var classes = I.classess(element);
+                        
+                            if (_indexOf(classes, className) === -1) {
+                              classes.push(className);
+                            }
+                            classes = classes.join(&#x27; &#x27;);
+                            return I.attribute(element, {
+                              class: classes
+                            });
+                          };
+                        
+                          /**
+                           * Remove Class
+                           *
+                           * @method removeClass
+                           * @param element {Object} HTML Element
+                           * @param className {String} string with className
+                           * @return {Array} Classnames
+                           */
+                          I.removeClass = function(element, className) {
+                            if (element === undefined) _error(&quot;first parameter cannot be undefined&quot;);
+                        
+                            if (_isIterable(element)) {
+                              _each(element, function(e) {
+                                I.removeClass(e, className);
+                              });
+                              return Dom;
+                            }
+                            if (!I.isDom(element)) _error(&quot;I.removeClass&quot; + element + &quot; is not a DOMNode object&quot;);
+                        
+                            if (!className) {
+                              return I.attribute(element, {
+                                class: null
+                              });
+                            }
+                        
+                            var classes = I.classess(element);
+                            var i = _indexOf(classes, className);
+                        
+                            if (i === -1) return;
+                        
+                            classes.splice(i, 1);
+                            return I.attribute(element, {
+                              class: classes.join(&#x27; &#x27;)
+                            });
+                          };
+                        
+                        
+                        
+                        
+                          /**
+                           * HTML MANIPULATION
+                           *
+                           * @class HTML
+                           */
+                        
+                        
+                          /**
+                           * Set or Get HTML text from  HTML element
+                           *
+                           * @method html
+                           *
+                           * @param element {String} HTML content to insert in new element
+                           * @param string {String} HTML content to insert in new element (optional)
+                           *
+                           * @return {Object} String or HTML content from element
+                           */
+                          I.html = function(element, string) {
+                            _checkDomRequired(element);
+                        
+                            if (_isString(string)) {
+                              element.innerHTML = string;
+                              return element;
+                            }
+                        
+                            return element.innerHTML;
+                          };
+                        
+                          /**
+                           * Create a div element with specific HTML content
+                           *
+                           * @method createHtml
+                           * @param html {String} HTML content to insert in new element
+                           * @return {Object} New HTML ELement with specific html content
+                           */
+                          I.createHtml = function(html) {
+                            var div = document.createElement(&#x27;div&#x27;);
+                            var elem = I.html(div, html);
+                        
+                            return elem;
+                          };
+                        
+                          /**
+                           * Create a DOMNode copy
+                           *
+                           * @method copy
+                           * @param element {Object} HTML element
+                           * @return {Object} Cloned HTML ELement
+                           */
+                          I.copy = function(element) {
+                            _checkDomRequired(element);
+                            return element.cloneNode(true);
+                          };
+                        
+                        
+                          /**
+                           * Set or get Text to HTML element
+                           *
+                           * @method text
+                           * @param element {Object} HTML element
+                           * @param string {String} Text to set in HTML Element (optional)
+                           * @optional
+                           *
+                           * @return {Object} Cloned HTML ELement
+                           */
+                          I.text = function(element, string) {
+                            _checkDomRequired(element);
+                        
+                            if (_isString(string)) {
+                        
+                              if (element.innerText) {
+                                element.innerText = string;
+                              } else {
+                                element.textContent = string;
+                              }
+                              return string;
+                            }
+                        
+                            if (element.innerText) return element.innerText;
+                            return element.textContent;
+                        
+                          };
+                        
+                          /**
+                           * Insert new HTML element to the END from HTML Element
+                           *
+                           * @method append
+                           * @param element {Object} HTML element
+                           * @param html {Mixed} If Text, create new element, If HTML Element, append to element
+                           *
+                           * @return {Object} HTML element appended
+                           */
+                          I.append = function(element, html) {
+                            _checkDomRequired(element);
+                        
+                            if (_isString(html)) html = I.createHtml(html);
+                        
+                            element.appendChild(html);
+                            return element;
+                          };
+                        
+                        
+                          /**
+                           * Insert html content to the BEGIN from HTML Element
+                           *
+                           * @method prepend
+                           * @param element {Object} HTML element
+                           * @param html {Mixed} If Text, create new element, If HTML Element, prepend to element
+                           *
+                           * @return {Object} HTML element prepended
+                           */
+                          I.prepend = function(element, html) {
+                            _checkDomRequired(element);
+                        
+                            if (_isString(html)) html = I.create(html);
+                        
+                            element.insertBefore(html, element.firstChild);
+                            return element;
+                          };
+                        
+                        
+                          /**
+                           * Insert html content AFTER from HTML Element
+                           *
+                           * @method after
+                           * @param element {Object} HTML element
+                           * @param html {Mixed} If Text, create new element, If HTML Element, insert after to element
+                           *
+                           * @return {Object} HTML element
+                           */
+                          I.after = function(element, html) {
+                            _checkDomRequired(element);
+                        
+                            if (_isString(html)) {
+                              html = I.create(html);
+                            }
+                        
+                            element.parentNode.insertBefore(html, element.nextSibling);
+                            return element;
+                          };
+                        
+                        
+                          /**
+                           * Insert html content BEFORE from HTML Element
+                           *
+                           * @method after
+                           * @param element {Object} HTML element
+                           * @param html {Mixed} If Text, create new element, If HTML Element, insert before to element
+                           *
+                           * @return {Object} HTML element
+                           */
+                          I.before = function(element, html) {
+                            _checkDomRequired(element);
+                        
+                            if (_isString(html)) {
+                              html = I.create(html);
+                            }
+                        
+                            element.insertBefore(html, element);
+                            return html;
+                          };
+                        
+                          /**
+                           * Replace HTML text or HTML Element on element
+                           *
+                           * @method replace
+                           * @param element {Object} HTML element
+                           * @param html {Mixed} If Text, create new element, If HTML Element, replace child html with element
+                           *
+                           * @return {Object} HTML element replaced
+                           */
+                          I.replace = function(element, html) {
+                            _checkDomRequired(element);
+                        
+                            if (_isString(html)) html = I.create(html);
+                        
+                            element.parentNode.replaceChild(html, element);
+                            return element;
+                          };
+                        
+                        
+                          /**
+                           * Remove DOM element
+                           *
+                           * @method remove
+                           * @param element {Object} HTML element
+                           *
+                           */
+                          I.remove = function(element) {
+                            _checkDomRequired(element);
+                        
+                            return element.parentNode.removeChild(element);
+                          };
+                        
+                        
+                          /**
+                           * MAIN EVENTS
+                           *
+                           * @class EVENTS
+                           */
+                        
+                        
+                        
+                          /**
+                           * Executed when PAGE is loaded
+                           *
+                           * @method loaded
+                           * @param handler {function} function
+                           *
+                           */
+                          I.loaded = function(handler) {
+                            if (_isDomLoaded !== false) {
+                              handler.call(null, _isDomLoaded);
+                              return Dom;
+                            }
+                            _domLoadedHandlers.push(handler);
+                            return Dom;
+                          };
+                        
+                          // executed when document will be ready
+                          I.ready = function(handler) {
+                            if (_isDomReady !== false) {
+                              handler.call(null, _isDomReady);
+                              return Dom;
+                            }
+                            _domReadyHandlers.push(handler);
+                            return Dom;
+                          };
+                        
+                          function _onDOMLoaded(e) {
+                        
+                            var event = new I.Event(e);
+                            _isDomLoaded = event;
+                        
+                            _each(_domLoadedHandlers, function(fn) {
+                              fn.call(null, event);
+                            });
+                          }
+                        
+                          //on load
+                          if (window.onload !== null) _domLoadedHandlers.push(window.onload);
+                        
+                          window.onload = _onDOMLoaded;
+                        
+                          //on ready
+                          function _onDOMReady(e) {
+                            //add most used selectors
+                            I.body = I.tag(&#x27;body&#x27;)[0];
+                            I.head = I.tag(&#x27;head&#x27;)[0];
+                        
+                            var event = new I.Event(e);
+                            _isDomReady = event;
+                        
+                            _each(_domReadyHandlers, function(fn) {
+                              fn.call(null, event);
+                            });
+                          }
+                          if (addListener === &#x27;attachEvent&#x27;) { //shitty browsers
+                            document[addListener](&#x27;onreadystatechange&#x27;, function(e) {
+                              if (document.readyState === &#x27;complete&#x27;) {
+                                document[removeListener](&#x27;onreadystatechange&#x27;, arguments.callee);
+                                _onDOMReady(e);
+                              }
+                            });
+                          } else { //ecma compatible browsers
+                            document[addListener](&#x27;DOMContentLoaded&#x27;, function(e) {
+                              document[removeListener](&#x27;DOMContentLoaded&#x27;, arguments.callee, false);
+                              _onDOMReady(e);
+                            }, false);
+                          }
+                        
+                        
+                          //export dom
+                          window.Dom = Dom;
+                        })(this, document);
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
